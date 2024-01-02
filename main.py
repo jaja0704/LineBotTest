@@ -9,8 +9,8 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 import os
 
-line_bot_api = LineBotApi(os.environ.get('CHANNEL_ACCESS_TOKEN'))
-channel_secret = os.environ.get('CHANNEL_SECRET')
+line_bot_api = LineBotApi(os.environ.get('zIT6hokPgn8EPo3xS1W4EiI791CWpZS0FE2ecr6mdXF+mIpngYxCEz9oE1B7yUyXs/PkPGbqX4BnovCmsUwcYsjiY5psqGLeVKBvxNHxlK48lJseXsJbE6KaqXQ2sATXMpCwLakmwhNCyL9O22oWaQdB04t89/1O/w1cDnyilFU='))
+channel_secret = os.environ.get('12564165ca992343a29c57ef28d4adf4')
 handler = WebhookHandler(channel_secret)
 
 def linebot(request):
