@@ -1,45 +1,46 @@
+#app.py
+from flask import Flask, request, abort
 
-import json
-import hmac
-import hashlib
-import base64
-from linebot import LineBotApi, WebhookHandler
-from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot import (
+    LineBotApi, WebhookHandler
+)
+from linebot.exceptions import (
+    InvalidSignatureError
+)
+from linebot.models import (
+    MessageEvent, TextMessage, TextSendMessage,
+)
 
-import os
+app = Flask(__name__)
 
-line_bot_api = LineBotApi(os.environ.get('zIT6hokPgn8EPo3xS1W4EiI791CWpZS0FE2ecr6mdXF+mIpngYxCEz9oE1B7yUyXs/PkPGbqX4BnovCmsUwcYsjiY5psqGLeVKBvxNHxlK48lJseXsJbE6KaqXQ2sATXMpCwLakmwhNCyL9O22oWaQdB04t89/1O/w1cDnyilFU='))
-channel_secret = os.environ.get('12564165ca992343a29c57ef28d4adf4')
-handler = WebhookHandler(channel_secret)
+line_bot_api = LineBotApi('Psnkw2tA4j14rYrB/TTH7xW+SMqwrs/0k9jL4gx4A8RcL4OKkHUtYmcKfvsKw0ExJ8L6nK+XrasNDi5r0d6SiDXZ6n89kpJEPemdNXBbwatQk0eTq5LWOQ4MH+PDtwMQLWraff+xqM4JR8ByYbfyPQdB04t89/1O/w1cDnyilFU=')
+handler = WebhookHandler('36d6157978f5fd29454b2dffc2962282')
 
-def linebot(request):
-    if request.method == 'POST':
-        if 'X-Line-Signature' not in request.headers:
-            return 'Error: Invalid source', 403
-        else:
-            # get X-Line-Signature header value
-            x_line_signature = request.headers['X-Line-Signature']
-            # get body value
-            body = request.get_data(as_text=True)
-            # decode body
-            hash = hmac.new(channel_secret.encode('utf-8'),
-                        body.encode('utf-8'), hashlib.sha256).digest()
-            signature = base64.b64encode(hash).decode('utf-8')
-            # Compare x-line-signature request header and the signature
-            if x_line_signature == signature:
-                try:
-                    json_data = json.loads(body)
-                    handler.handle(body, x_line_signature)
-                    tk = json_data['events'][0]['replyToken']         # 取得 reply token
-                    msg = json_data['events'][0]['message']['text']   # 取得 訊息 
-                    line_bot_api.reply_message(tk,TextSendMessage(msg)) # 回傳 訊息
-                    # print(msg, tk)
-                    return 'OK', 200
-                except:
-                    print('error')
-            else:
-                return 'Invalid signature', 403
-    else:
-        return 'Method not allowed', 400
-   
+
+@app.route("/callback", methods=['POST'])
+def callback():
+    # get X-Line-Signature header value
+    signature = request.headers['X-Line-Signature']
+
+    # get request body as text
+    body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+
+    # handle webhook body
+    try:
+        handler.handle(body, signature)
+    except InvalidSignatureError:
+        abort(400)
+
+    return 'OK'
+
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+    line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage(text=event.message.text))
+
+
+if __name__ == "__main__":
+    app.run()
