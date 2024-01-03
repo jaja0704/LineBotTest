@@ -10,6 +10,7 @@ from linebot.exceptions import (
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
+import json
 
 app = Flask(__name__)
 
@@ -25,6 +26,11 @@ def callback():
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
+    
+    #get json data
+    json_data = json.loads(body)
+    print(json_data)
+
 
     # handle webhook body
     try:
@@ -37,11 +43,23 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    if event.message.text == "1":
+    if event.message.text == "給我地址":
+        line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage("https://maps.app.goo.gl/PmNmbJ7MYapXBtye7"))
+
+    elif event.message.text == "給我菜單":
         line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage("這是第一樣："))
-    line_bot_api.reply_message(
+
+    elif event.message.text == "給我地址":
+        line_bot_api.reply_message(
+        event.reply_token,
+        TextSendMessage("這是第一樣："))
+
+    else:
+        line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=event.message.text))
 
