@@ -57,10 +57,10 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    messagetest = {
-    "type": "text",
-    "text": "Hello, world"
-}
+    messagetest = [{
+    'type': "text",
+    'text': "Hello, world"
+}]
     
     
     if event.message.text == "給我地址":
@@ -73,10 +73,10 @@ def handle_message(event):
         event.reply_token, TextSendMessage("https://stu.ntou.edu.tw/var/file/23/1023/img/1093/CampusMap.jpg")
         )
 
-    elif event.message.text == "給我菜單":
+    elif event.message.text == "你好":
         line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage("這是第一樣："))
+        messagetest)
 
     else:
         line_bot_api.reply_message(
