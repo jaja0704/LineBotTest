@@ -57,8 +57,7 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    messagetest = [{ "type": "text", "text": "Hello, world"}]
-    messagedump = json.dumps(messagetest)
+    messagetest = '{ "type": "text", "text": "Hello, world"}'
     
     if event.message.text == "給我地址":
         line_bot_api.reply_message(
@@ -73,7 +72,7 @@ def handle_message(event):
     elif event.message.text == "你好":
         line_bot_api.reply_message(
         event.reply_token,
-        messagedump)
+        messagetest)
 
     else:
         line_bot_api.reply_message(
