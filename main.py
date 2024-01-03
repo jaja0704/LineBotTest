@@ -57,10 +57,7 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    messagetest = [{
-    'type': "text",
-    'text': "Hello, world"
-}]
+    messagetest = [{ "type": "text", "text": "Hello, world"}]
     messagedump = json.dumps(messagetest)
     
     if event.message.text == "給我地址":
