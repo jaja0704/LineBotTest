@@ -58,8 +58,8 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     messagetest = {
-        "type": "text",
-        "text": "Hello, world"
+        type: 'text',
+        text: 'Hello, world'
     }
     
     
@@ -73,7 +73,7 @@ def handle_message(event):
         event.reply_token, messagetest
         )
 
-    elif event.message.text == "給我地址":
+    elif event.message.text == "給我菜單":
         line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage("這是第一樣："))
