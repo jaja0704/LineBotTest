@@ -51,7 +51,11 @@ def handle_message(event):
     elif event.message.text == "給我菜單":
         line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage("這是第一樣："))
+        {
+            "type": "text",
+            "text": "Hello, world"
+        }
+        )
 
     elif event.message.text == "給我地址":
         line_bot_api.reply_message(
