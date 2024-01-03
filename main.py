@@ -61,7 +61,7 @@ def handle_message(event):
     'type': "text",
     'text': "Hello, world"
 }]
-    
+    messagedump = json.dumps(messagetest)
     
     if event.message.text == "給我地址":
         line_bot_api.reply_message(
@@ -76,7 +76,7 @@ def handle_message(event):
     elif event.message.text == "你好":
         line_bot_api.reply_message(
         event.reply_token,
-        messagetest)
+        messagedump)
 
     else:
         line_bot_api.reply_message(
